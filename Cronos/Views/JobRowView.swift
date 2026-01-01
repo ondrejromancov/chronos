@@ -49,9 +49,13 @@ struct JobRowView: View {
                     .padding(.leading, 16)
             }
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, LayoutConstants.horizontalMargin)
         .padding(.vertical, 8)
-        .background(isHovered ? Color.primary.opacity(0.04) : Color.clear)
+        .background(
+            RoundedRectangle(cornerRadius: LayoutConstants.cellCornerRadius)
+                .fill(Color.primary.opacity(isHovered ? HoverOpacity.standard : 0))
+        )
+        .animation(.easeInOut(duration: AnimationDurations.fast), value: isHovered)
         .onHover { hovering in
             isHovered = hovering
         }

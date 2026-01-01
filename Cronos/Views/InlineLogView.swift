@@ -94,9 +94,9 @@ struct InlineLogView: View {
                 .buttonStyle(.borderless)
                 .help("View log history")
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, LayoutConstants.horizontalMargin)
             .padding(.vertical, 8)
-            .background(Color.primary.opacity(0.02))
+            .background(Color.primary.opacity(HoverOpacity.subtle))
 
             Divider()
 
@@ -124,12 +124,15 @@ struct InlineLogView: View {
                         .id("bottom")
                 }
                 .frame(height: 180)
-                .background(Color(nsColor: .textBackgroundColor).opacity(0.5))
+                .background(
+                    RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius)
+                        .fill(Color(nsColor: .textBackgroundColor).opacity(0.6))
+                )
                 .onChange(of: displayedLog) { _, newValue in
                     // Smart auto-scroll: only scroll if we're near the bottom
                     // For simplicity, always scroll on new content while running
                     if isRunning {
-                        withAnimation(.easeOut(duration: 0.1)) {
+                        withAnimation(.easeOut(duration: AnimationDurations.instant)) {
                             proxy.scrollTo("bottom", anchor: .bottom)
                         }
                     }

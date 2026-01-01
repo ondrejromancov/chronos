@@ -30,6 +30,10 @@
 		A10000010000000000000021 /* LogHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000021 /* LogHistoryView.swift */; };
 		A10000010000000000000022 /* LogHistoryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000022 /* LogHistoryWindow.swift */; };
 		A10000010000000000000023 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000023 /* NotificationService.swift */; };
+		A10000010000000000000024 /* DesignConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000024 /* DesignConstants.swift */; };
+		A10000010000000000000025 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000025 /* VisualEffectView.swift */; };
+		A10000010000000000000026 /* HoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000026 /* HoverButton.swift */; };
+		A10000010000000000000027 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000027 /* SearchField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +60,10 @@
 		A10000020000000000000021 /* LogHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHistoryView.swift; sourceTree = "<group>"; };
 		A10000020000000000000022 /* LogHistoryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHistoryWindow.swift; sourceTree = "<group>"; };
 		A10000020000000000000023 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A10000020000000000000024 /* DesignConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignConstants.swift; sourceTree = "<group>"; };
+		A10000020000000000000025 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		A10000020000000000000026 /* HoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverButton.swift; sourceTree = "<group>"; };
+		A10000020000000000000027 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		A10000030000000000000001 /* Cronos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cronos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -105,6 +113,7 @@
 		A10000050000000000000004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A10000050000000000000010 /* Components */,
 				A10000020000000000000008 /* MenuBarView.swift */,
 				A10000020000000000000009 /* JobListView.swift */,
 				A10000020000000000000010 /* JobRowView.swift */,
@@ -119,6 +128,16 @@
 				A10000020000000000000022 /* LogHistoryWindow.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		A10000050000000000000010 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A10000020000000000000025 /* VisualEffectView.swift */,
+				A10000020000000000000026 /* HoverButton.swift */,
+				A10000020000000000000027 /* SearchField.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		A10000050000000000000005 /* ViewModels */ = {
@@ -144,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000020000000000000015 /* LaunchAtLogin.swift */,
+				A10000020000000000000024 /* DesignConstants.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -255,6 +275,10 @@
 				A10000010000000000000021 /* LogHistoryView.swift in Sources */,
 				A10000010000000000000022 /* LogHistoryWindow.swift in Sources */,
 				A10000010000000000000023 /* NotificationService.swift in Sources */,
+				A10000010000000000000024 /* DesignConstants.swift in Sources */,
+				A10000010000000000000025 /* VisualEffectView.swift in Sources */,
+				A10000010000000000000026 /* HoverButton.swift in Sources */,
+				A10000010000000000000027 /* SearchField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

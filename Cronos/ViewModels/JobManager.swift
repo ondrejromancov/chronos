@@ -12,6 +12,21 @@ class JobManager: ObservableObject {
     @Published var expandedJobId: UUID?
     @Published var errorMessage: String?
 
+    // MARK: - Search & Keyboard Navigation
+
+    @Published var selectedJobId: UUID?
+    @Published var searchQuery: String = ""
+
+    /// Filtered jobs based on search query
+    var filteredJobs: [Job] {
+        guard !searchQuery.isEmpty else { return jobs }
+        let query = searchQuery.lowercased()
+        return jobs.filter {
+            $0.name.lowercased().contains(query) ||
+            $0.command.lowercased().contains(query)
+        }
+    }
+
     /// Live output data for currently running jobs
     @Published private(set) var liveOutputs: [UUID: LiveOutput] = [:]
 
@@ -60,6 +75,13 @@ class JobManager: ObservableObject {
     }
 
     func deleteJob(_ job: Job) async {
+        // Clear selection if deleting selected job
+        if selectedJobId == job.id {
+            selectedJobId = nil
+        }
+        if selectedJob?.id == job.id {
+            selectedJob = nil
+        }
         jobs.removeAll { $0.id == job.id }
         // Clean up both legacy logs and new run history
         await store.deleteLog(for: job.id)
@@ -229,5 +251,47 @@ class JobManager: ObservableObject {
             }
         }
         scheduler?.reschedule(jobs: jobs)
+    }
+
+    // MARK: - Keyboard Navigation
+
+    func selectNextJob() {
+        let list = filteredJobs
+        guard !list.isEmpty else { return }
+
+        if let currentId = selectedJobId,
+           let currentIndex = list.firstIndex(where: { $0.id == currentId }) {
+            let nextIndex = min(currentIndex + 1, list.count - 1)
+            selectedJobId = list[nextIndex].id
+        } else {
+            selectedJobId = list.first?.id
+        }
+    }
+
+    func selectPreviousJob() {
+        let list = filteredJobs
+        guard !list.isEmpty else { return }
+
+        if let currentId = selectedJobId,
+           let currentIndex = list.firstIndex(where: { $0.id == currentId }) {
+            let prevIndex = max(currentIndex - 1, 0)
+            selectedJobId = list[prevIndex].id
+        } else {
+            selectedJobId = list.last?.id
+        }
+    }
+
+    func toggleSelectedJobExpansion() {
+        guard let id = selectedJobId else { return }
+        // Toggle selection for popover (using selectedJob)
+        if selectedJob?.id == id {
+            selectedJob = nil
+        } else if let job = filteredJobs.first(where: { $0.id == id }) {
+            selectedJob = job
+        }
+    }
+
+    func clearSearch() {
+        searchQuery = ""
     }
 }

@@ -39,8 +39,8 @@ struct AddJobView: View {
                             .frame(minHeight: 60)
                             .scrollContentBackground(.hidden)
                             .padding(8)
-                            .background(Color.primary.opacity(0.03))
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .background(Color.primary.opacity(HoverOpacity.subtle))
+                            .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius))
                     }
 
                     HStack {

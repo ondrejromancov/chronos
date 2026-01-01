@@ -106,14 +106,18 @@ private struct MenuRow: View {
 
                 Spacer()
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, LayoutConstants.horizontalMargin)
             .padding(.vertical, 6)
-            .background(isHovered ? Color.primary.opacity(0.06) : Color.clear)
+            .background(
+                RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius)
+                    .fill(Color.primary.opacity(isHovered ? HoverOpacity.standard : 0))
+            )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .disabled(disabled)
         .opacity(disabled ? 0.4 : 1)
+        .animation(.easeInOut(duration: AnimationDurations.fast), value: isHovered)
         .onHover { hovering in
             isHovered = hovering
         }
