@@ -109,7 +109,7 @@ struct AddJobView: View {
             // Buttons
             HStack {
                 Button("Cancel") {
-                    dismiss()
+                    closeWindow()
                 }
                 .keyboardShortcut(.escape)
 
@@ -182,6 +182,13 @@ struct AddJobView: View {
             }
         }
 
+        closeWindow()
+    }
+
+    private func closeWindow() {
+        if editing != nil {
+            jobManager.editingJob = nil
+        }
         dismiss()
     }
 }

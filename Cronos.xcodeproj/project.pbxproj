@@ -23,6 +23,8 @@
 		A10000010000000000000014 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000014 /* SettingsView.swift */; };
 		A10000010000000000000015 /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000015 /* LaunchAtLogin.swift */; };
 		A10000010000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000016 /* Assets.xcassets */; };
+		A10000010000000000000017 /* EditJobWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000017 /* EditJobWindow.swift */; };
+		A10000010000000000000018 /* LogViewerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000018 /* LogViewerWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		A10000020000000000000014 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A10000020000000000000015 /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
 		A10000020000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000020000000000000017 /* EditJobWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobWindow.swift; sourceTree = "<group>"; };
+		A10000020000000000000018 /* LogViewerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerWindow.swift; sourceTree = "<group>"; };
 		A10000030000000000000001 /* Cronos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cronos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,6 +101,8 @@
 				A10000020000000000000012 /* AddJobView.swift */,
 				A10000020000000000000013 /* LogViewerView.swift */,
 				A10000020000000000000014 /* SettingsView.swift */,
+				A10000020000000000000017 /* EditJobWindow.swift */,
+				A10000020000000000000018 /* LogViewerWindow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -227,6 +233,8 @@
 				A10000010000000000000013 /* LogViewerView.swift in Sources */,
 				A10000010000000000000014 /* SettingsView.swift in Sources */,
 				A10000010000000000000015 /* LaunchAtLogin.swift in Sources */,
+				A10000010000000000000017 /* EditJobWindow.swift in Sources */,
+				A10000010000000000000018 /* LogViewerWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

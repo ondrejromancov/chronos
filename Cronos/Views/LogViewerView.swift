@@ -20,6 +20,7 @@ struct LogViewerView: View {
                     Task { await loadLogs() }
                 }
                 Button("Done") {
+                    jobManager.selectedJobForLogs = nil
                     dismiss()
                 }
                 .keyboardShortcut(.escape)

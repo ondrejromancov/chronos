@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MenuBarView: View {
     @EnvironmentObject var jobManager: JobManager
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack(spacing: 0) {
@@ -10,7 +11,7 @@ struct MenuBarView: View {
                 Text("Cronos")
                     .font(.headline)
                 Spacer()
-                Button(action: { jobManager.showingAddJob = true }) {
+                Button(action: { openWindow(id: "add-job") }) {
                     Image(systemName: "plus")
                 }
                 .buttonStyle(.borderless)
@@ -30,7 +31,7 @@ struct MenuBarView: View {
                     Text("No jobs scheduled")
                         .foregroundStyle(.secondary)
                     Button("Add Job") {
-                        jobManager.showingAddJob = true
+                        openWindow(id: "add-job")
                     }
                     .buttonStyle(.bordered)
                 }
@@ -57,13 +58,5 @@ struct MenuBarView: View {
             .padding(.vertical, 8)
         }
         .frame(width: 300)
-        .sheet(isPresented: $jobManager.showingAddJob) {
-            AddJobView()
-                .environmentObject(jobManager)
-        }
-        .sheet(item: $jobManager.editingJob) { job in
-            AddJobView(editing: job)
-                .environmentObject(jobManager)
-        }
     }
 }

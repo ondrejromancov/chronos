@@ -4,7 +4,7 @@ struct JobDetailPopover: View {
     let job: Job
     @EnvironmentObject var jobManager: JobManager
     @Environment(\.dismiss) var dismiss
-    @State private var showingLogs = false
+    @Environment(\.openWindow) private var openWindow
     @State private var showingDeleteConfirm = false
 
     var body: some View {
@@ -59,7 +59,8 @@ struct JobDetailPopover: View {
             // Actions
             HStack(spacing: 8) {
                 Button("View Logs") {
-                    showingLogs = true
+                    jobManager.selectedJobForLogs = job
+                    openWindow(id: "logs")
                 }
 
                 Button("Run Now") {
@@ -71,8 +72,8 @@ struct JobDetailPopover: View {
                 .disabled(jobManager.isRunning(job))
 
                 Button("Edit") {
-                    dismiss()
                     jobManager.editingJob = job
+                    openWindow(id: "edit-job")
                 }
             }
             .buttonStyle(.bordered)
@@ -93,10 +94,6 @@ struct JobDetailPopover: View {
         }
         .padding()
         .frame(width: 300)
-        .sheet(isPresented: $showingLogs) {
-            LogViewerView(job: job)
-                .environmentObject(jobManager)
-        }
         .confirmationDialog("Delete '\(job.name)'?", isPresented: $showingDeleteConfirm, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 Task {

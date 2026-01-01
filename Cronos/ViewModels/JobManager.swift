@@ -5,9 +5,9 @@ import SwiftUI
 class JobManager: ObservableObject {
     @Published private(set) var jobs: [Job] = []
     @Published private(set) var runningJobIds: Set<UUID> = []
-    @Published var showingAddJob = false
     @Published var editingJob: Job?
     @Published var selectedJob: Job?
+    @Published var selectedJobForLogs: Job?
     @Published var errorMessage: String?
 
     private let store = JobStore()

@@ -14,6 +14,24 @@ struct CronosApp: App {
         }
         .menuBarExtraStyle(.window)
 
+        Window("New Job", id: "add-job") {
+            AddJobView()
+                .environmentObject(jobManager)
+        }
+        .windowResizability(.contentSize)
+
+        Window("Edit Job", id: "edit-job") {
+            EditJobWindow()
+                .environmentObject(jobManager)
+        }
+        .windowResizability(.contentSize)
+
+        Window("Logs", id: "logs") {
+            LogViewerWindow()
+                .environmentObject(jobManager)
+        }
+        .windowResizability(.contentSize)
+
         Settings {
             SettingsView()
         }
