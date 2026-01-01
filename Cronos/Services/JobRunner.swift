@@ -15,8 +15,8 @@ actor JobRunner {
         fileManager.createFile(atPath: stderrFile.path, contents: nil)
 
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/bash")
-        process.arguments = ["-c", command]
+        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        process.arguments = ["-l", "-i", "-c", command]
 
         // Expand ~ in working directory
         let expandedPath = (workingDirectory as NSString).expandingTildeInPath
