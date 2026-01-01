@@ -14,9 +14,16 @@ actor JobRunner {
         fileManager.createFile(atPath: stdoutFile.path, contents: nil)
         fileManager.createFile(atPath: stderrFile.path, contents: nil)
 
+        // Sanitize smart quotes to straight quotes
+        let sanitizedCommand = command
+            .replacingOccurrences(of: "\u{201C}", with: "\"")  // " left double
+            .replacingOccurrences(of: "\u{201D}", with: "\"")  // " right double
+            .replacingOccurrences(of: "\u{2018}", with: "'")   // ' left single
+            .replacingOccurrences(of: "\u{2019}", with: "'")   // ' right single
+
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        process.arguments = ["-l", "-i", "-c", command]
+        process.arguments = ["-l", "-i", "-c", sanitizedCommand]
 
         // Expand ~ in working directory
         let expandedPath = (workingDirectory as NSString).expandingTildeInPath
