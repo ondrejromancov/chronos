@@ -19,14 +19,6 @@ A lightweight macOS menu bar app for scheduling bash commands.
 
 ## Installation
 
-### Homebrew (Recommended)
-
-```bash
-brew install --cask ondrejromancov/tap/claudecron
-```
-
-### Manual Download
-
 1. Download the latest DMG from [Releases](https://github.com/ondrejromancov/chronos/releases)
 2. Open the DMG and drag Cronos to your Applications folder
 3. **Important:** Right-click the app and select "Open" (required for unsigned apps)
@@ -98,14 +90,6 @@ Schedule: Daily at 9:00
 - macOS 14 (Sonoma) or later
 
 ## Uninstalling
-
-### Via Homebrew
-
-```bash
-brew uninstall --cask claudecron
-```
-
-### Manual
 
 1. Quit Cronos from the menu bar
 2. Delete Cronos.app from Applications

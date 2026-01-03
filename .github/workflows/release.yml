@@ -91,12 +91,6 @@ jobs:
 
             ### Installation
 
-            **Via Homebrew (recommended):**
-            ```bash
-            brew install --cask ondrejromancov/tap/claudecron
-            ```
-
-            **Manual installation:**
             1. Download `${{ env.dmg_name }}`
             2. Open the DMG and drag Cronos to Applications
             3. Right-click the app and select "Open" (required for unsigned apps)
