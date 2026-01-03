@@ -7,7 +7,10 @@ struct AddJobView: View {
     let editing: Job?
 
     @State private var name = ""
+    @State private var jobType: JobType = .claude
     @State private var command = ""
+    @State private var claudePrompt = ""
+    @State private var contextDirectory = ""
     @State private var workingDirectory = "~"
     @State private var scheduleType: ScheduleType = .daily
     @State private var hour = 9
@@ -23,30 +26,70 @@ struct AddJobView: View {
         self.editing = editing
     }
 
+    private var isFormValid: Bool {
+        guard !name.isEmpty else { return false }
+        switch jobType {
+        case .claude:
+            return !claudePrompt.isEmpty
+        case .customCommand:
+            return !command.isEmpty
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Form
             Form {
                 Section {
+                    Picker("Type", selection: $jobType) {
+                        Text("Claude").tag(JobType.claude)
+                        Text("Custom Command").tag(JobType.customCommand)
+                    }
+                    .pickerStyle(.segmented)
+
                     TextField("Name", text: $name)
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Command")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                        TextEditor(text: $command)
-                            .font(.system(.body, design: .monospaced))
-                            .frame(minHeight: 60)
-                            .scrollContentBackground(.hidden)
-                            .padding(8)
-                            .background(Color.primary.opacity(HoverOpacity.subtle))
-                            .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius))
+                    if jobType == .claude {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Prompt")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                            TextEditor(text: $claudePrompt)
+                                .font(.system(.body, design: .monospaced))
+                                .frame(minHeight: 60)
+                                .scrollContentBackground(.hidden)
+                                .padding(8)
+                                .background(Color.primary.opacity(HoverOpacity.subtle))
+                                .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius))
+                        }
+
+                        HStack {
+                            TextField("Context Directory (optional)", text: $contextDirectory)
+                                .font(.system(.body, design: .monospaced))
+                            Button(action: selectContextDirectory) {
+                                Image(systemName: "folder")
+                            }
+                            .buttonStyle(.borderless)
+                        }
+                    } else {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Command")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                            TextEditor(text: $command)
+                                .font(.system(.body, design: .monospaced))
+                                .frame(minHeight: 60)
+                                .scrollContentBackground(.hidden)
+                                .padding(8)
+                                .background(Color.primary.opacity(HoverOpacity.subtle))
+                                .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.buttonCornerRadius))
+                        }
                     }
 
                     HStack {
                         TextField("Working Directory", text: $workingDirectory)
                             .font(.system(.body, design: .monospaced))
-                        Button(action: selectDirectory) {
+                        Button(action: selectWorkingDirectory) {
                             Image(systemName: "folder")
                         }
                         .buttonStyle(.borderless)
@@ -113,7 +156,7 @@ struct AddJobView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.return)
-                .disabled(name.isEmpty || command.isEmpty)
+                .disabled(!isFormValid)
             }
             .padding()
         }
@@ -122,7 +165,10 @@ struct AddJobView: View {
         .onAppear {
             if let job = editing {
                 name = job.name
+                jobType = job.jobType
                 command = job.command
+                claudePrompt = job.claudePrompt ?? ""
+                contextDirectory = job.contextDirectory ?? ""
                 workingDirectory = job.workingDirectory
 
                 switch job.schedule {
@@ -140,7 +186,18 @@ struct AddJobView: View {
         }
     }
 
-    private func selectDirectory() {
+    private func selectContextDirectory() {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+
+        if panel.runModal() == .OK, let url = panel.url {
+            contextDirectory = url.path
+        }
+    }
+
+    private func selectWorkingDirectory() {
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
@@ -159,7 +216,10 @@ struct AddJobView: View {
         if let existing = editing {
             var updated = existing
             updated.name = name
+            updated.jobType = jobType
             updated.command = command
+            updated.claudePrompt = claudePrompt.isEmpty ? nil : claudePrompt
+            updated.contextDirectory = contextDirectory.isEmpty ? nil : contextDirectory
             updated.workingDirectory = workingDirectory
             updated.schedule = schedule
             Task {
@@ -170,7 +230,10 @@ struct AddJobView: View {
                 name: name,
                 command: command,
                 workingDirectory: workingDirectory,
-                schedule: schedule
+                schedule: schedule,
+                jobType: jobType,
+                claudePrompt: claudePrompt.isEmpty ? nil : claudePrompt,
+                contextDirectory: contextDirectory.isEmpty ? nil : contextDirectory
             )
             Task {
                 await jobManager.addJob(job)

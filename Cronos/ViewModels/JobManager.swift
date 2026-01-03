@@ -23,7 +23,8 @@ class JobManager: ObservableObject {
         let query = searchQuery.lowercased()
         return jobs.filter {
             $0.name.lowercased().contains(query) ||
-            $0.command.lowercased().contains(query)
+            $0.command.lowercased().contains(query) ||
+            ($0.claudePrompt ?? "").lowercased().contains(query)
         }
     }
 
@@ -142,7 +143,7 @@ class JobManager: ObservableObject {
 
             let shell = UserDefaults.standard.string(forKey: "shell") ?? Shell.zsh.rawValue
             let success = try await runner.run(
-                command: job.command,
+                command: job.effectiveCommand,
                 workingDirectory: job.workingDirectory,
                 shell: shell,
                 stdoutFile: logFiles.stdout,
