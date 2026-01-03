@@ -1,11 +1,12 @@
 import Foundation
 
 actor JobRunner {
-    /// Runs a bash command and captures output to files
+    /// Runs a shell command and captures output to files
     /// Returns true if exit code was 0
     /// - Parameters:
-    ///   - command: The bash command to run
+    ///   - command: The shell command to run
     ///   - workingDirectory: Directory to run the command in
+    ///   - shell: Path to the shell executable (e.g., /bin/zsh, /bin/bash)
     ///   - stdoutFile: File to write stdout to
     ///   - stderrFile: File to write stderr to
     ///   - onStdout: Optional callback for streaming stdout (called with new text as it arrives)
@@ -13,6 +14,7 @@ actor JobRunner {
     func run(
         command: String,
         workingDirectory: String,
+        shell: String,
         stdoutFile: URL,
         stderrFile: URL,
         onStdout: (@Sendable (String) -> Void)? = nil,
@@ -31,7 +33,7 @@ actor JobRunner {
             .replacingOccurrences(of: "\u{2019}", with: "'")   // ' right single
 
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        process.executableURL = URL(fileURLWithPath: shell)
         process.arguments = ["-l", "-i", "-c", sanitizedCommand]
 
         // Expand ~ in working directory

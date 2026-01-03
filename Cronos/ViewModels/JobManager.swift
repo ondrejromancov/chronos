@@ -140,9 +140,11 @@ class JobManager: ObservableObject {
                 logFiles = await store.logFiles(for: job.id)
             }
 
+            let shell = UserDefaults.standard.string(forKey: "shell") ?? Shell.zsh.rawValue
             let success = try await runner.run(
                 command: job.command,
                 workingDirectory: job.workingDirectory,
+                shell: shell,
                 stdoutFile: logFiles.stdout,
                 stderrFile: logFiles.stderr,
                 onStdout: { [weak self] text in
