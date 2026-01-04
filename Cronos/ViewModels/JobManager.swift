@@ -42,13 +42,65 @@ class JobManager: ObservableObject {
     private let runner = JobRunner()
     private var scheduler: JobScheduler?
 
+    // MARK: - File Watching (nonisolated for thread-safe dispatch source access)
+    private nonisolated(unsafe) var fileMonitor: DispatchSourceFileSystemObject?
+    private nonisolated(unsafe) var fileDescriptor: Int32 = -1
+
     init() {
         Task {
             await loadJobs()
             setupScheduler()
+            setupFileWatcher()
             // Request notification permission
             _ = await NotificationService.shared.requestPermission()
         }
+    }
+
+    deinit {
+        fileMonitor?.cancel()
+    }
+
+    // MARK: - File Watching
+
+    private func setupFileWatcher() {
+        let jobsFilePath = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent(".cronos/jobs.json").path
+
+        // Open file descriptor for monitoring
+        fileDescriptor = open(jobsFilePath, O_EVTONLY)
+        guard fileDescriptor >= 0 else {
+            // File might not exist yet, which is fine
+            return
+        }
+
+        // Create dispatch source to monitor file changes
+        fileMonitor = DispatchSource.makeFileSystemObjectSource(
+            fileDescriptor: fileDescriptor,
+            eventMask: [.write, .delete, .rename],
+            queue: .main
+        )
+
+        fileMonitor?.setEventHandler { [weak self] in
+            guard let self = self else { return }
+            Task { @MainActor in
+                await self.handleFileChange()
+            }
+        }
+
+        fileMonitor?.setCancelHandler { [fileDescriptor] in
+            if fileDescriptor >= 0 {
+                close(fileDescriptor)
+            }
+        }
+
+        fileMonitor?.resume()
+    }
+
+    private func handleFileChange() async {
+        // Reload jobs from disk
+        await loadJobs()
+        // Reschedule all jobs
+        scheduler?.reschedule(jobs: jobs)
     }
 
     // MARK: - Job CRUD
